@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 function GetFormattedPrice() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState(0);
 
     useEffect(() => {
         fetch(`https://api.etherscan.io/api?module=stats&action=ethprice&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`)
@@ -25,7 +25,8 @@ function GetFormattedPrice() {
     } else if (!isLoaded) {
         return <div>Loading...</div>;
     } else {
-        return `$${price} USD`;
+        const formattedPrice = price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0;
+        return `$${formattedPrice} USD`;
     }
 }
 
